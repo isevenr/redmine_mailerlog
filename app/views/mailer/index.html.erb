@@ -1,0 +1,33 @@
+<%= stylesheet_link_tag "mailer.css", :plugin => 'mailer_log' %>
+<%= javascript_include_tag "mailer.js", :plugin => 'mailer_log' %>
+<h2>Sent Emails</h2>
+<hr/>
+<table class="list issues sort-by-id sort-desc">
+    <thead>
+        <tr>
+            <th class="left">Project</th>
+            <th class="left">Issue</th>
+            <th class="left">Recipient</th>
+            <th class="left">Subject</th>
+            <th class="left">Sent At</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @logs.each do |log| %>
+        <tr class="<%= cycle('odd','even')%>">
+            <td class="left"><%= log.project_name %></td>
+            <td class="left">
+                <%= link_to "##{log.issue_id}", Issue.find(log.issue_id), :class => 'shortcut', :target => '_blank' %>
+            </td>
+            <td class="left"><%= log.recipient%></td>
+            <td class="left"><%= log.subject%></td>
+            <td class="left"><%= log.sent_at%></td>
+            <td><%= log.status %></td>
+        </tr>
+        <% end %>
+    </tbody>
+</table>
+<%= will_paginate @logs %>
+<hr/>
+<input type="submit" value="Flush Log" onclick="window.location='<%= delete_all_mail_logs_path %>'"></input>
